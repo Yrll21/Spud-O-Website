@@ -38,9 +38,9 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
             <li class="nav-item">
-              <a class="nav-link active text-light" aria-current="page" href="#!">Home</a>
+              <!-- <a class="nav-link active text-light" aria-current="page" href="#!">Home</a> -->
             </li>
-            <li class="nav-item"><a class="nav-link text-light" href="#!">Facebook Page</a></li>
+            <!-- <li class="nav-item"><a class="nav-link text-light" href="#!">Facebook Page</a></li> -->
             <!-- <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
@@ -65,22 +65,22 @@
               Cart
               <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
             </button>
-          </form>
+          </form>/bacon
         </div>
       </div>
     </nav>
     <!-- Header-->
-      <div id="header" class=" px-4 px-lg-5 py-5" style="background-image: url(/assets/Food\ Menu\ 2.jpg); background-size: cover; background-position: center;">
-        <div class="text-center text-black">
-          <img src="/assets/Logo.png" class="img-fluid" height=200 width=400 alt="Spud-O Bacolod Logo">
-          <h1 class="display-4 fw-bolder">Bacolod</h1>
+      <div id="header" class=" px-4 px-lg-5 py-5 bg-white bg-opacity-75">
+        <div style="background-image: url(/assets/Hero.png); background-size: cover; background-position: center; width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: -1;"></div>
+        <div class="text-center text-black my-6 bg-opacity-75 py-3">
+          <img src="/assets/Logo.png" class="img-fluid" height=200 width=600 alt="Spud-O Bacolod Logo">
           <p class="lead fw-normal text-black-50 mb-0">
             Caution when eating. Extremely Hot once served.
           </p>
         </div>
       </div>
     </header>    <!-- Section-->
-    <section class="py-5">
+    <section class="py-5 bg-primary">
       <div class="container px-4 px-lg-5 mt-5">
         <div
           class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
@@ -88,65 +88,20 @@
           <div class="col mb-5">
             <div class="card h-100">
               <!-- Product image-->
-              <img
-                class="card-img-top"
-                src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
-                alt="..."
-              />
+               <div class="product-image-container">
+                 <img
+                   class="card-img-top"
+                   src="assets/bacon-and-cheddar.png"
+                   alt="..."
+                 />
+               </div>
               <!-- Product details-->
               <div class="card-body p-4">
                 <div class="text-center">
                   <!-- Product name-->
-                  <h5 class="fw-bolder">Fancy Product</h5>
+                  <h5 class="fw-bolder">Bacon and Cheddar</h5>
                   <!-- Product price-->
-                  $40.00 - $80.00
-                </div>
-              </div>
-              <!-- Product actions-->
-              <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                <div class="text-center">
-                  <a class="btn btn-outline-dark mt-auto" href="#"
-                    >View options</a
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col mb-5">
-            <div class="card h-100">
-              <!-- Sale badge-->
-              <div
-                class="badge bg-dark text-white position-absolute"
-                style="top: 0.5rem; right: 0.5rem"
-              >
-                Sale
-              </div>
-              <!-- Product image-->
-              <img
-                class="card-img-top"
-                src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
-                alt="..."
-              />
-              <!-- Product details-->
-              <div class="card-body p-4">
-                <div class="text-center">
-                  <!-- Product name-->
-                  <h5 class="fw-bolder">Special Item</h5>
-                  <!-- Product reviews-->
-                  <div
-                    class="d-flex justify-content-center small text-warning mb-2"
-                  >
-                    <div class="bi-star-fill"></div>
-                    <div class="bi-star-fill"></div>
-                    <div class="bi-star-fill"></div>
-                    <div class="bi-star-fill"></div>
-                    <div class="bi-star-fill"></div>
-                  </div>
-                  <!-- Product price-->
-                  <span class="text-muted text-decoration-line-through"
-                    >$20.00</span
-                  >
-                  $18.00
+                  P155
                 </div>
               </div>
               <!-- Product actions-->
@@ -162,28 +117,64 @@
           <div class="col mb-5">
             <div class="card h-100">
               <!-- Sale badge-->
-              <div
+              <!-- <div
                 class="badge bg-dark text-white position-absolute"
                 style="top: 0.5rem; right: 0.5rem"
               >
                 Sale
-              </div>
+              </div> -->
               <!-- Product image-->
-              <img
-                class="card-img-top"
-                src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
-                alt="..."
-              />
+               <div class="product-image-container">
+                 <img
+                   class="card-img-top"
+                   src="assets/chili-con-carne.png"
+                   alt="..."
+                 />
+               </div>
               <!-- Product details-->
               <div class="card-body p-4">
                 <div class="text-center">
                   <!-- Product name-->
-                  <h5 class="fw-bolder">Sale Item</h5>
-                  <!-- Product price-->
-                  <span class="text-muted text-decoration-line-through"
-                    >$50.00</span
+                  <h5 class="fw-bolder">Chili Con Carne</h5>
+                  <!-- Product Price-->
+                   P185
+                </div>
+              </div>
+              <!-- Product actions-->
+              <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                <div class="text-center">
+                  <a class="btn btn-outline-dark mt-auto" href="#"
+                    >Add to cart</a
                   >
-                  $25.00
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col mb-5">
+            <div class="card h-100">
+              <!-- Sale badge-->
+              <!-- <div
+                class="badge bg-dark text-white position-absolute"
+                style="top: 0.5rem; right: 0.5rem"
+              >
+                Sale
+              </div> -->
+              <!-- Product image-->
+               <div class="product-image-container">
+
+                 <img
+                   class="card-img-top"
+                   src="assets/creamy spinach.png"
+                   alt="..."
+                 />
+               </div>
+              <!-- Product details-->
+              <div class="card-body p-4">
+                <div class="text-center">
+                  <!-- Product name-->
+                  <h5 class="fw-bolder">Creamy Spinach</h5>
+                  <!-- Product price-->
+                  P160
                 </div>
               </div>
               <!-- Product actions-->
@@ -199,18 +190,21 @@
           <div class="col mb-5">
             <div class="card h-100">
               <!-- Product image-->
-              <img
-                class="card-img-top"
-                src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
-                alt="..."
-              />
+               <div class="product-image-container">
+                 <img
+                   class="card-img-top"
+                   src="assets/cheese-and-beans.png"
+                   alt="..."
+                 />
+               </div>
               <!-- Product details-->
               <div class="card-body p-4">
                 <div class="text-center">
                   <!-- Product name-->
-                  <h5 class="fw-bolder">Popular Item</h5>
-                  <!-- Product reviews-->
-                  <div
+                  <h5 class="fw-bolder">Cheese and Beans</h5>
+                  <!-- Product Price-->
+                   P155
+                  <!-- <div
                     class="d-flex justify-content-center small text-warning mb-2"
                   >
                     <div class="bi-star-fill"></div>
@@ -220,7 +214,7 @@
                     <div class="bi-star-fill"></div>
                   </div>
                   <!-- Product price-->
-                  $40.00
+                  <!-- $40.00 --> 
                 </div>
               </div>
               <!-- Product actions-->
@@ -240,7 +234,7 @@
     <footer class="py-5 bg-dark">
       <div class="container">
         <p class="m-0 text-center text-white">
-          Copyright &copy; Your Website 2023
+          Website made by nwbengineer 2024
         </p>
       </div>
     </footer>
