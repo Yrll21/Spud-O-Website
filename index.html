@@ -18,7 +18,8 @@
 <body>
 
   <!-- Modal for Add to Cart -->
-  <div class="modal fade" id="atc-modal" data-bs-backdrop="static" tabindex="-1" aria-labelledby=" aria-hidden=" true">
+  <div class="modal fade" id="atc-modal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="checkout-modal-label"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -29,20 +30,20 @@
           <form>
             <div class="mb-3">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="Cheddar" id="bc-cheddar">
+                <input class="form-check-input" type="checkbox" value="Cheddar" id="addon-cheddar">
                 <label class="form-check-label" for="cheddar">
-                  Cheddar
+                  Cheddar - P30
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="Jalapeno" id="bc-jalapeno">
+                <input class="form-check-input" type="checkbox" value="Jalapeno" id="addon-jalapeno">
                 <label class="form-check-label" for="jalapeno">
-                  Jalapeno js
+                  Jalapeno - P15
                 </label>
               </div>
               <br />
               <h6>Amount:</h6>
-              <input type="number" class="form-control" value="0" id="amount" min="0" />
+              <input id="amount" type="number" class="form-control" value="0" id="amount" min="0" />
               <div class="input-group-append mt-3">
                 <button class="btn btn-outline-secondary" onclick="addAmount()" type="button" id="add-item">+</button>
                 <button class="btn btn-outline-secondary" onclick="reduceAmount()" type="button"
@@ -53,33 +54,26 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Add to Cart</button>
+          <button type="button" onclick="addToItemList(event)" class="btn btn-primary">Add Item
+            to Cart</button>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Modal for Checkout -->
-  <div class="modal fade" id="checkout-modal" data-bs-backdrop="static" tabindex="-1"
-    aria-labelledby="checkout-modal-label" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen">
+  <div class="modal fade" id="checkout-modal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="checkout-modal-label">Checkout</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <ul class="list-group">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <span id="checkout-item-name">Item Name</span>
-              <span id="checkout-item-price">Price</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <span id="checkout-item-addon">Add-on</span>
-              <span id="checkout-item-addon-price">Price</span>
-            </li>
-          </ul>
-          <h6 class="mt-3">Total: <span id="checkout-total-price">0</span></h6>
+          <div id="checkout-item-list">
+            <!-- Item placeholder-->
+            <!-- End of item -->
+          </div>
           <h6 class="mt-3">Total Amount to Pay: <span id="checkout-total-amount">0</span></h6>
           <br />
           <h5 class="mt-3">Payment Details:</h5>
@@ -88,17 +82,33 @@
             <input type="text" class="form-control" id="name" placeholder="Name">
           </div>
           <div class="form-group mt-3">
+            <label for="location">Location</label>
+            <input type="text" class="form-control" id="location" placeholder="Location">
+          </div>
+          <div class="form-group mt-3">
             <label for="email">Email</label>
             <input type="email" class="form-control" id="email" placeholder="Email">
+          </div>
+          <div class="form-group mt-3">
+            <label for="delivery-date">Delivery Date</label>
+            <input type="date" class="form-control" id="delivery-date" min="" placeholder="Delivery Date">
+            <script>
+              var today = new Date().toISOString().split('T')[0];
+              document.getElementById("delivery-date").setAttribute('min', today);
+            </script>
+          </div>
+          <div class="form-group mt-3">
+            <label for="delivery-time">Time of Delivery</label>
+            <input type="time" class="form-control" id="delivery-time" placeholder="Time of Delivery">
           </div>
           <div class="form-group mt-3">
             <label for="payment-ref">Payment Reference Number</label>
             <input type="text" class="form-control" id="payment-ref" placeholder="Payment Reference Number">
           </div>
-          <button type="button" class="btn btn-primary mt-3" onclick="showQRCode()">Show QR Code</button>
-          <div id="qr-code-container" class="d-none mt-3">
-            <canvas id="qr-code"></canvas>
-          </div>
+          <h5 class="mt-3">Gcash payment QR Code:</h6>
+            <div id="qr-code-container" class=" mt-3">
+              <img src="assets/sample-qr.svg" id="qr-code" alt="Sample QR Code" />
+            </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -107,6 +117,7 @@
       </div>
     </div>
   </div>
+
 
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-light bg-dark">
@@ -141,12 +152,12 @@
             </li> -->
         </ul>
         <form class="d-flex">
-          <button class="btn btn-outline-light" type="submit" data-bs-toggle="modal" data-bs-target="#checkout-modal">
+          <button class="btn btn-outline-light" type="button" data-bs-toggle="modal" data-bs-target="#checkout-modal">
             <i class="bi-cart-fill me-1"></i>
             Cart
-            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+            <span id="cart-count" class="badge bg-dark text-white ms-1 rounded-pill">0</span>
           </button>
-        </form>/bacon
+        </form>
       </div>
     </div>
   </nav>
@@ -193,8 +204,8 @@
             <!-- Product actions-->
             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
               <div class="text-center">
-                <button class="btn btn-outline-dark mt-auto add-to-cart" data-bs-toggle="modal"
-                  data-bs-target="#atc-modal" type="button">Add to cart</button>
+                <button id="bc-atc-btn" class="btn btn-outline-dark mt-auto add-to-cart" data-bs-toggle="modal"
+                  data-bs-target="#atc-modal" onclick="addNewItem(event)" type="button">Add to cart</button>
               </div>
             </div>
           </div>
@@ -225,8 +236,8 @@
             <!-- Product actions-->
             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
               <div class="text-center">
-                <button class="btn btn-outline-dark mt-auto add-to-cart" data-bs-toggle="modal"
-                  data-bs-target="#atc-modal" type="button">Add to cart</button>
+                <button id="ccc-atc-btn" class="btn btn-outline-dark mt-auto add-to-cart" data-bs-toggle="modal"
+                  data-bs-target="#atc-modal" onclick="addNewItem(event)" type="button">Add to cart</button>
               </div>
             </div>
           </div>
@@ -258,7 +269,8 @@
             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
               <div class="text-center">
                 <button class="btn btn-outline-dark mt-auto add-to-cart" data-bs-toggle="modal"
-                  data-bs-target="#atc-modal" type="button">Add to cart</button>
+                  data-bs-target="#atc-modal" type="button" id="cs-atc-btn" onclick="addNewItem(event)">Add to
+                  cart</button>
               </div>
             </div>
           </div>
@@ -293,7 +305,8 @@
             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
               <div class="text-center">
                 <button class="btn btn-outline-dark mt-auto add-to-cart" data-bs-toggle="modal"
-                  data-bs-target="#atc-modal" type="button">Add to cart</button>
+                  data-bs-target="#atc-modal" type="button" id="cb-atc-btn" onclick="addNewItem(event)">Add to
+                  cart</button>
               </div>
             </div>
           </div>
