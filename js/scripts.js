@@ -176,3 +176,4 @@ function getItemAddOnsPrice(itemContainer) {
   if (addOns.includes("Jalapeno")) addOnsPrice += 15;
   return addOnsPrice;
 }
+// TODO: Add the logic for checking out
