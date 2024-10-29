@@ -260,4 +260,28 @@ function checkout() {
   });
 
   alert("Purchase data submitted!");
+  clearCheckoutData();
+}
+
+// Function to clear cart data and reset the UI
+function clearCheckoutData() {
+  // Reset global variables
+  totalNumberOfItems = 0;
+  totalAmountToPay = 0;
+  dataToSubmitArray = []; // Clear out the array
+
+  // Clear UI elements
+  document.getElementById("checkout-item-list").innerHTML = ""; // Clear all items in the checkout list
+  document.getElementById("cart-count").textContent = "0"; // Reset cart count display
+  document.getElementById("checkout-total-amount").textContent = "0"; // Reset total amount display
+
+  // Clear form fields
+  document.getElementById("name").value = "";
+  document.getElementById("email").value = "";
+  document.getElementById("location").value = "";
+  document.getElementById("payment-ref").value = "";
+  document.getElementById("delivery-date").value = "";
+  document.getElementById("delivery-time").value = "";
+
+  console.log("Checkout data has been cleared.");
 }
