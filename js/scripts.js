@@ -11,8 +11,8 @@ function reduceAmount() {
   if (amount.value > 0) amount.value--;
 }
 
-function removeItem(event) {
-  const itemContainer = event.target.parentNode;
+function removeItem(uniqueId) {
+  const itemContainer = document.getElementById(`item-${uniqueId}`);
   const itemName = itemContainer.querySelector(
     "#checkout-item-name",
   ).textContent;
@@ -22,27 +22,25 @@ function removeItem(event) {
   const itemPrice = getItemPrice(itemName);
   const addOnsPrice = getItemAddOnsPrice(itemContainer);
 
-  // Log current values for debugging
-  console.log("Removing item:", itemName);
-  console.log("Item Amount:", itemAmount);
-  console.log("Item Price:", itemPrice);
-  console.log("Add-ons Price:", addOnsPrice);
-
-  // Update the totalNumberOfItems and totalAmountToPay before updating the UI
+  // Update the totals
   totalNumberOfItems -= itemAmount;
   totalAmountToPay -= itemAmount * (itemPrice + addOnsPrice);
 
-  // Log updated totals for debugging
-  console.log("Updated Total Number of Items:", totalNumberOfItems);
-  console.log("Updated Total Amount to Pay:", totalAmountToPay);
-
-  // Update the UI after calculation
+  // Update the UI totals
   document.getElementById("cart-count").textContent = totalNumberOfItems;
   document.getElementById("checkout-total-amount").textContent =
     totalAmountToPay;
 
   // Remove the item container from the UI
   itemContainer.remove();
+
+  // Find and remove the item in dataToSubmitArray by its unique ID
+  const index = dataToSubmitArray.findIndex((item) => item.id === uniqueId);
+  if (index !== -1) {
+    dataToSubmitArray.splice(index, 1);
+  }
+
+  console.log("Updated dataToSubmitArray:", dataToSubmitArray);
 }
 
 function addNewItem(event) {
@@ -112,8 +110,11 @@ function addToItemList(event) {
     addOns = "None";
   }
 
+  // Generate a unique ID for the new item
+  const uniqueId = `${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
   var newItemFormat = `          <!-- Item placeholder-->
-          <div>
+          <div id="item-${uniqueId}">
           <ul class="list-group mt-3">
             <li class="list-group-item d-flex justify-content-between align-items-center">
               <span id="checkout-item-name">${itemName}</span>
@@ -125,7 +126,7 @@ function addToItemList(event) {
             </li>
           </ul>
           <h6 class="mt-3">Total: <span id="item-amount">${itemAmount}</span></h6>
-          <button type="button" class="btn btn-danger btn-sm" onclick="removeItem(event)">Remove</button>
+          <button type="button" class="btn btn-danger btn-sm" onclick="removeItem('${uniqueId}')">Remove</button>
           </div>
           <!-- End of item -->`;
 
@@ -146,6 +147,7 @@ function addToItemList(event) {
 
   // Append the itemName, itemPrice, and addOns to dataToSubmitArray
   dataToSubmitArray.push({
+    id: uniqueId,
     itemName: itemName,
     itemPrice: itemPrice,
     addOns: addOns,
@@ -207,37 +209,55 @@ function getItemAddOnsPrice(itemContainer) {
 //
 
 function checkout() {
+  // Check if dataToSubmitArray is empty
+  if (dataToSubmitArray.length === 0) {
+    alert("No items in the cart to submit.");
+    return; // Exit the function if there are no items
+  }
+
   const customerName = document.getElementById("name").value;
   const customerEmail = document.getElementById("email").value;
+  const deliveryLocation = document.getElementById("location").value;
+  const gcashReference = document.getElementById("payment-ref").value;
+  const deliveryDate = document.getElementById("delivery-date").value;
+  const deliveryTime = document.getElementById("delivery-time").value;
 
-  // Prepare data to send to Google Form
-  const formData = new FormData();
+  // Delay in milliseconds between each request (e.g., 500ms)
+  const delay = 500;
 
-  // Map your fields to Google Form's entry IDs
+  // Function to submit each item with a delay
   dataToSubmitArray.forEach((item, index) => {
-    formData.append("entry.1477564829", item.itemName); // Replace with the actual entry ID for Item Name
-    formData.append("entry.2062987717", item.itemPrice); // Replace with the actual entry ID for Item Price
-    formData.append("entry.1509328554", item.addOns); // Replace with the actual entry ID for Add-Ons
-    formData.append("entry.493907925", item.addOnsPrice); // Replace with the actual entry ID for Add-Ons Price
-    formData.append("entry.1890790625", item.itemAmount); // Replace with the actual entry ID for Item Amount
-    formData.append("entry.160880018", customerName); // Replace with the actual entry ID for Customer Name
-    formData.append("entry.719354033", customerEmail); // Replace with the actual entry ID for Customer Email
+    setTimeout(() => {
+      const formData = new FormData();
+      formData.append("entry.1477564829", item.itemName); // Replace with the actual entry ID for Item Name
+      formData.append("entry.2062987717", item.itemPrice); // Replace with the actual entry ID for Item Price
+      formData.append("entry.1509328554", item.addOns); // Replace with the actual entry ID for Add-Ons
+      formData.append("entry.493907925", item.addOnsPrice); // Replace with the actual entry ID for Add-Ons Price
+      formData.append("entry.1890790625", item.itemAmount); // Replace with the actual entry ID for Item Amount
+      formData.append("entry.160880018", customerName); // Replace with the actual entry ID for Customer Name
+      formData.append("entry.719354033", customerEmail); // Replace with the actual entry ID for Customer Email
+      formData.append("entry.915620030", deliveryLocation);
+      formData.append("entry.1940383630", deliveryDate);
+      formData.append("entry.2046317432", deliveryTime);
+      formData.append("entry.554588921", gcashReference);
+
+      // Send data to Google Form using fetch
+      fetch(
+        "https://docs.google.com/forms/d/e/1FAIpQLSf88BIYZhdLDHLEPrpBPmlW192uc5-2Hqz3asLLv1PL_lvI4w/formResponse",
+        {
+          method: "POST",
+          body: formData,
+          mode: "no-cors", // This will bypass the CORS issue
+        },
+      )
+        .then(() => {
+          console.log("Item submitted:", item);
+        })
+        .catch((error) => {
+          console.error("Error submitting item:", error);
+        });
+    }, index * delay); // Delay each request based on its index
   });
-  // https://docs.google.com/forms/d/e/1FAIpQLSf88BIYZhdLDHLEPrpBPmlW192uc5-2Hqz3asLLv1PL_lvI4w/viewform?usp=sf_link
-  // Send data to Google Form using fetch
-  fetch(
-    "https://docs.google.com/forms/d/e/1FAIpQLSf88BIYZhdLDHLEPrpBPmlW192uc5-2Hqz3asLLv1PL_lvI4w/formResponse",
-    {
-      method: "POST",
-      body: formData,
-      mode: "no-cors", // This will bypass the CORS issue
-    },
-  )
-    .then(() => {
-      alert("Purchase data submitted!");
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      alert("Error submitting purchase data.");
-    });
+
+  alert("Purchase data submitted!");
 }
