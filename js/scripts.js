@@ -88,6 +88,30 @@ function addToItemList(event) {
       itemName = "Creamy Curry";
       itemPrice = 155;
       break;
+    case "os-bbqc-atc-btn":
+      itemName = "OS - BBQ Chicken";
+      itemPrice = 115;
+      break;
+    case "os-bc-atc-btn":
+      itemName = "OS - Bacon and Cheddar";
+      itemPrice = 115;
+      break;
+    case "os-cb-atc-btn":
+      itemName = "OS - Cheese and Beans";
+      itemPrice = 115;
+      break;
+    case "os-cs-atc-btn":
+      itemName = "OS - Creamy Spinach";
+      itemPrice = 115;
+      break;
+    case "os-ccc-atc-btn":
+      itemName = "OS - Chilli Con Carne";
+      itemPrice = 135;
+      break;
+    case "os-cc-atc-btn":
+      itemName = "OS - Creamy Curry";
+      itemPrice = 115;
+      break;
     default:
       break;
   }
@@ -190,6 +214,18 @@ function getItemPrice(itemName) {
       return 185;
     case "Creamy Curry":
       return 155;
+    case "OS - BBQ Chicken":
+      return 115;
+    case "OS - Bacon and Cheddar":
+      return 115;
+    case "OS - Cheese and Beans":
+      return 115;
+    case "OS - Creamy Spinach":
+      return 115;
+    case "OS - Chilli Con Carne":
+      return 135;
+    case "OS - Creamy Curry":
+      return 115;
     default:
       return 0;
   }
