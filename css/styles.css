@@ -11185,3 +11185,47 @@ fieldset:disabled .btn {
   height: 100%;
   object-fit: cover;
 }
+/* Basic styling for the checkout container */
+#checkout-container {
+  padding: 12px;
+}
+
+#body-container {
+  display: flex;
+  height: 100vh; /* Full height to occupy the viewport */
+  overflow: hidden; /* Prevent overall scrolling of the body container */
+}
+
+#menu-container {
+  flex-grow: 1; /* Allows it to take up the remaining space */
+  overflow-y: auto; /* Makes the main menu scrollable */
+}
+
+#checkout-container {
+  width: 400px; /* Adjust width as needed */
+  height: 100%; /* Full height */
+  overflow-y: auto; /* Makes the checkout section scrollable */
+  border-left: 1px solid #ccc; /* Optional border for clarity */ 
+  background-color: #fff; /* Background color for better visibility */
+}
+#menu-container,
+#checkout-container {
+  overflow-y: scroll; /* Allows scrolling */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling for touch devices */
+}
+
+/* Hide scrollbar for Webkit browsers */
+#menu-container::-webkit-scrollbar,
+#checkout-container::-webkit-scrollbar {
+  width: 0px; /* Hides scrollbar */
+}
+
+#menu-container {
+  scrollbar-width: none; /* Hides scrollbar in Firefox */
+}
+
+#checkout-container {
+  scrollbar-width: none; /* Hides scrollbar in Firefox */
+}
+
+d
