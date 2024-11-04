@@ -14,10 +14,10 @@ function reduceAmount() {
 function removeItem(uniqueId) {
   const itemContainer = document.getElementById(`item-${uniqueId}`);
   const itemName = itemContainer.querySelector(
-    "#checkout-item-name",
+    "#checkout-item-name"
   ).textContent;
   const itemAmount = parseInt(
-    itemContainer.querySelector("#item-amount").textContent,
+    itemContainer.querySelector("#item-amount").textContent
   );
   const itemPrice = getItemPrice(itemName);
   const addOnsPrice = getItemAddOnsPrice(itemContainer);
@@ -64,13 +64,13 @@ function addToItemList(event) {
   }
   let itemName = "";
   switch (currentItemId) {
-    case "bbqc-atc-btn":
-      itemName = "BBQ Chicken";
-      itemPrice = 155;
-      break;
+    // case "bbqc-atc-btn":
+    //   itemName = "BBQ Chicken";
+    //   itemPrice = 155;
+    //   break;
     case "bc-atc-btn":
       itemName = "Bacon and Cheddar";
-      itemPrice = 155;
+      itemPrice = 165;
       break;
     case "cb-atc-btn":
       itemName = "Cheese and Beans";
@@ -205,7 +205,7 @@ function getItemPrice(itemName) {
     case "BBQ Chicken":
       return 155;
     case "Bacon and Cheddar":
-      return 155;
+      return 165;
     case "Cheese and Beans":
       return 155;
     case "Creamy Spinach":
@@ -234,7 +234,7 @@ function getItemPrice(itemName) {
 // Helper function to get the add-ons price of an item
 function getItemAddOnsPrice(itemContainer) {
   const addOns = itemContainer.querySelector(
-    "#checkout-item-addon",
+    "#checkout-item-addon"
   ).textContent;
   let addOnsPrice = 0;
   if (addOns.includes("Cheddar")) addOnsPrice += 30;
@@ -258,6 +258,25 @@ function checkout() {
   const deliveryDate = document.getElementById("delivery-date").value;
   const deliveryTime = document.getElementById("delivery-time").value;
 
+  let paymentMethod;
+  switch (document.querySelector('input[name="payment-method"]:checked').id) {
+    case "cash-payment":
+      paymentMethod = "Cash";
+      break;
+    case "gcash-payment":
+      paymentMethod = "Gcash";
+      break;
+    case "food-panda":
+      paymentMethod = "Food Panda";
+      break;
+    case "grab":
+      paymentMethod = "Grab";
+      break;
+    default:
+      alert("Please select a payment method.");
+      return;
+  }
+
   // Delay in milliseconds between each request (e.g., 500ms)
   const delay = 500;
 
@@ -275,8 +294,8 @@ function checkout() {
       formData.append("entry.915620030", deliveryLocation);
       formData.append("entry.1940383630", deliveryDate);
       formData.append("entry.2046317432", deliveryTime);
+      formData.append("entry.3494364", paymentMethod);
       formData.append("entry.554588921", gcashReference);
-
       // Send data to Google Form using fetch
       fetch(
         "https://docs.google.com/forms/d/e/1FAIpQLSf88BIYZhdLDHLEPrpBPmlW192uc5-2Hqz3asLLv1PL_lvI4w/formResponse",
@@ -284,7 +303,7 @@ function checkout() {
           method: "POST",
           body: formData,
           mode: "no-cors", // This will bypass the CORS issue
-        },
+        }
       )
         .then(() => {
           console.log("Item submitted:", item);
